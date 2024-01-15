@@ -1,0 +1,10 @@
+## Config
+/.vscode/
+.env*
+!.env.example
+
+## Generated
+node_modules/
+dist/
+drizzle/db/
+.vercel/
