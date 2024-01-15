@@ -1,0 +1,13 @@
+#root {
+	min-height: inherit;
+	padding-block: var(--space-s);
+
+	/* Wrapper */
+	inline-size: clamp(20rem, 95vw, 75rem);
+	padding-inline: var(--space-s);
+	margin-inline: auto;
+
+	& > footer {
+		font-weight: 600;
+	}
+}

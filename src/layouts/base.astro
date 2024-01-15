@@ -1,0 +1,35 @@
+---
+import '~/css/style.css';
+import './base.css';
+
+export interface Props {
+	title: string | false;
+}
+
+const docTitle = (Astro.props.title ? Astro.props.title + ' | ' : '') + 'Songbook';
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{docTitle}</title>
+	</head>
+	<body>
+		<div id="root" class="l-gelati | flow">
+			<nav class="l-repel">
+				<a href="/">Home</a>
+				<ul role="list" class="l-cluster">
+					<li><a href="/songs">Songs</a></li>
+				</ul>
+			</nav>
+			<main>
+				<slot />
+			</main>
+			<footer class="l-center">
+				<p>Made with love by Binyamin Green</p>
+			</footer>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,8 @@
+@import '@kochav/css';
+@import '@kochav/css/config/fluid.css';
+
+:root {
+	--color-text: var(--color-neutral-900);
+	--color-surface: white;
+	--color-accent: var(--color-accent-600);
+}
