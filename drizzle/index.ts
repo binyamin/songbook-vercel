@@ -12,8 +12,6 @@ export const client = createClient({
 	authToken: process.env.DATABASE_AUTH_TOKEN,
 });
 
-await client.execute('PRAGMA journal_mode = WAL;');
-
 export const db = drizzle(client, { schema });
 
 await migrate(db, { migrationsFolder: './drizzle/migrations' });
