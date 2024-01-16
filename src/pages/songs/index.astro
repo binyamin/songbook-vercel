@@ -1,0 +1,18 @@
+---
+import Layout from '~/layouts/base.astro';
+import { songs } from '~/services/db.ts';
+
+const list = await songs.findMany();
+---
+
+<Layout title="Songs">
+	<article class="document | flow">
+		<h1>Songs</h1>
+		<ol start="1">
+			{list.map((v) =>
+				<li><a href={'/songs/id/' + v.id}>{v.title}</a></li>
+			)}
+		</ol>
+	</article>
+</Layout>
+temp/services/db

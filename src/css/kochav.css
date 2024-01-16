@@ -5,4 +5,6 @@
 	--color-text: var(--color-neutral-900);
 	--color-surface: white;
 	--color-accent: var(--color-accent-600);
+
+	--font-family-monospace: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace, emoji;
 }

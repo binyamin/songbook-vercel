@@ -1,0 +1,80 @@
+---
+import { safeParse } from 'valibot';
+
+import Layout from '~/layouts/base.astro';
+import { Button } from '~/components/elements/button';
+
+import { songs } from '~/services/db.ts';
+import { formatIssues, formToJSON } from '~/services/helpers.ts';
+
+import '~/components/elements/form-field/text-field.css';
+const session = await Astro.locals.auth.validate();
+
+if (!session) {
+	return new Response("Unauthorized", {
+		status: 401,
+	});
+}
+
+let errors: Partial<ReturnType<typeof formatIssues>> = {}
+
+if (Astro.request.method === 'POST') {
+	const input = formToJSON(await Astro.request.formData());
+
+	const res = safeParse(songs.inputSchema, input);
+
+	if (res.success) {
+		const data = await songs.insert(res.output);
+
+		return Astro.redirect('/songs/id/' + data.id, 303);
+	}
+
+	errors = formatIssues(res.issues);
+}
+---
+
+<Layout title="New Song">
+	<article class="document | flow">
+		<h1>New Song</h1>
+
+		<form method="post" class="flow">
+			{errors.root && <output class="_error"><p><b>Error:</b> {errors.root}</p></output>}
+
+			<div class='form-field'>
+				<label for="form-title">Title</label>
+				<input class="input" data-type="text" type="text" name="title" id="form-title" required autocapitalize="words" />
+
+				{errors.fields?.title &&
+					<div class="_error">
+						<p>{errors.fields.title}</p>
+					</div>
+				}
+			</div>
+			<!-- <div class="form-field"> -->
+				<!-- <label for="form-key">Key Signature</label> -->
+				<!-- Ideally, this would be a combobox (a text-field with autocomplete) -->
+				<!-- <input class="input" data-type="text" type="text" name="key" id="form-key" pattern="[A-G][b#]?m?" size={3} /> -->
+				<!-- TODO: hint text with example key signatures -->
+			<!-- </div> -->
+			<style>
+				.input[name=content] {
+					font-family: var(--font-family-monospace);
+					white-space: pre-wrap;
+				}
+			</style>
+			<div class="form-field">
+				<label for="form-content">Content</label>
+				<!-- Idea: Progressive enhancement: JS which adds a song-part fieldset (title+content) when a button is clicked -->
+				<textarea class="input" name="content" id="form-content" spellcheck="false" autocomplete="off" required></textarea>
+
+				{errors.fields?.content &&
+					<div class="_error">
+						<p>{errors.fields.content}</p>
+					</div>
+				}
+			</div>
+
+			<Button type="submit">Create</Button>
+		</form>
+	</article>
+</Layout>
