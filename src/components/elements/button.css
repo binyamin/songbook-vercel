@@ -31,6 +31,13 @@
 	background-color: var(--_bg-color);
 	border: 1px solid var(--_border-color, var(--_bg-color));
 
+	&[data-color=danger] {
+		--color-accent-100: var(--color-danger-100);
+		--color-accent-200: var(--color-danger-200);
+		--color-accent-600: var(--color-danger-600);
+		--color-accent-700: var(--color-danger-700);
+	}
+
 	&:not([data-variant]),
 	&[data-variant=solid] {
 		--outline-color: var(--color-accent-600);
@@ -46,6 +53,7 @@
 	&[data-variant=soft] {
 		--outline-color: var(--color-accent-100);
 
+		--_border-color: var(--color-accent-200);
 		--_bg-color: var(--color-accent-100);
 		color: var(--color-accent-600);
 
@@ -63,11 +71,11 @@
 	}
 
 	&[data-variant=text] {
-		color: var(--color-accent-700);
+		color: var(--color-accent-600);
 		padding: 0;
 
 		&:hover {
-			color: var(--color-accent-800);
+			color: var(--color-accent-700);
 		}
 	}
 }

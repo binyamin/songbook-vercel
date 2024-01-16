@@ -14,6 +14,7 @@ export default {
 		jit({
 			...scale('accent', harmony.indigo),
 			...scale('neutral', harmony.neutral),
+			...scale('danger', harmony.red),
 		}),
 	],
 }
