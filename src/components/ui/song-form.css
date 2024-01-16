@@ -1,0 +1,8 @@
+.form-field {
+	--form-width: 54ch;
+}
+
+.input[name=content] {
+	font-family: var(--font-family-monospace);
+	white-space: pre-wrap;
+}

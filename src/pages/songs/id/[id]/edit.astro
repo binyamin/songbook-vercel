@@ -2,10 +2,10 @@
 import { safeParse } from 'valibot';
 
 import Layout from '~/layouts/base.astro';
+import { SongForm } from '~/components/ui/song-form';
+
 import { songs } from '~/services/db.ts';
 import { formatIssues, formToJSON } from '~/services/helpers.ts';
-
-import { SongForm } from '~/components/ui/song-form';
 
 const session = await Astro.locals.auth.validate();
 
@@ -15,7 +15,15 @@ if (!session) {
 	});
 }
 
+const id = Astro.params.id!;
+
 let errors: Partial<ReturnType<typeof formatIssues>> = {}
+
+const data = await songs.findOne(id);
+
+if (!data) {
+	return new Response(null, { status: 404 });
+}
 
 if (Astro.request.method === 'POST') {
 	const input = formToJSON(await Astro.request.formData());
@@ -23,7 +31,7 @@ if (Astro.request.method === 'POST') {
 	const res = safeParse(songs.inputSchema, input);
 
 	if (res.success) {
-		const data = await songs.insert(res.output);
+		const data = await songs.update(id, res.output);
 
 		return Astro.redirect('/songs/id/' + data.id, 303);
 	}
@@ -32,10 +40,10 @@ if (Astro.request.method === 'POST') {
 }
 ---
 
-<Layout title="New Song">
+<Layout title={`Editing "${data.title}" | Songs`}>
 	<article class="document | flow">
-		<h1>New Song</h1>
+		<h1>Editing <b>{data.title}</b></h1>
 
-		<SongForm type="new" errors={errors} />
+		<SongForm type="edit" errors={errors} input={data} cancelUrl={'/songs/id/' + data.id} />
 	</article>
 </Layout>

@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { createInsertSchema } from 'drizzle-valibot';
 import { nanoid } from 'nanoid';
-import { type Input, omit, parse, safeParse } from 'valibot';
+import { type Input, omit, parse } from 'valibot';
 
 import { song as model, type Song } from '../models/index.ts';
 import { db, schema } from '../index.js';
