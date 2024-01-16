@@ -1,3 +1,4 @@
+import {fileURLToPath} from 'node:url';
 import 'dotenv/config';
 
 import { createClient } from '@libsql/client';
@@ -14,4 +15,4 @@ export const client = createClient({
 
 export const db = drizzle(client, { schema });
 
-await migrate(db, { migrationsFolder: './drizzle/migrations' });
+await migrate(db, { migrationsFolder: fileURLToPath(import.meta.resolve('./drizzle/migrations')) });
