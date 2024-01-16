@@ -7,7 +7,8 @@
 	"scripts": {
 		"dev": "astro dev",
 		"build": "astro build",
-		"preview": "astro build && astro preview"
+		"preview": "astro build && astro preview",
+		"prepare:db": "drizzle-kit generate:sqlite"
 	},
 	"dependencies": {
 		"@evilmartians/harmony": "^1.2.0",
@@ -16,7 +17,11 @@
 	},
 	"devDependencies": {
 		"@astrojs/solid-js": "^4.0.1",
+		"@libsql/client": "^0.4.0-pre.7",
 		"astro": "^4.1.2",
+		"dotenv": "^16.3.1",
+		"drizzle-kit": "^0.20.12",
+		"drizzle-orm": "^0.29.3",
 		"postcss-jit-props": "^1.0.14"
 	}
 }
