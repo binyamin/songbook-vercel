@@ -8,7 +8,6 @@ import * as schema from './schema.ts';
 export { schema }
 
 export const client = createClient({
-	fetch,
 	url: process.env.DATABASE_URL!,
 	authToken: process.env.DATABASE_AUTH_TOKEN,
 });
