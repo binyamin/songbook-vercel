@@ -2,11 +2,14 @@
 import '~/css/style.css';
 import './base.css';
 
+import { Button } from '~/components/elements/button';
+
 export interface Props {
 	title: string | false;
 }
 
 const docTitle = (Astro.props.title ? Astro.props.title + ' | ' : '') + 'Songbook';
+const session = await Astro.locals.auth.validate();
 ---
 
 <html lang="en">
@@ -22,8 +25,30 @@ const docTitle = (Astro.props.title ? Astro.props.title + ' | ' : '') + 'Songboo
 				<a href="/">Home</a>
 				<ul role="list" class="l-cluster">
 					<li><a href="/songs">Songs</a></li>
+					{session && <li><a href="/songs/new">New Song</a></li>}
+					<li>{session
+						? <form method="POST" action="/log-out" name="logout">
+							<Button type="submit" color='danger' variant="soft">Log out</Button>
+						</form>
+						: <a href="/log-in">Log in</a>
+					}</li>
 				</ul>
 			</nav>
+			<script>
+				const form = document.forms.namedItem('logout');
+
+				if (form) {
+					form.addEventListener('submit', (ev) => {
+						ev.preventDefault();
+
+						const res = window.confirm('Are you sure you want to log out?');
+
+						if (res) {
+							form.submit();
+						}
+					});
+				}
+			</script>
 			<main>
 				<slot />
 			</main>

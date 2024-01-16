@@ -16,13 +16,16 @@
 		"solid-js": "^1.8.11"
 	},
 	"devDependencies": {
+		"@astrojs/vercel": "^6.1.4",
 		"@astrojs/solid-js": "^4.0.1",
 		"@libsql/client": "^0.4.0-pre.7",
+		"@lucia-auth/adapter-sqlite": "^2.0.1",
 		"astro": "^4.1.2",
 		"dotenv": "^16.3.1",
 		"drizzle-kit": "^0.20.12",
 		"drizzle-orm": "^0.29.3",
 		"drizzle-valibot": "^0.1.1",
+		"lucia": "^2.7.6",
 		"nanoid": "^5.0.4",
 		"postcss-jit-props": "^1.0.14",
 		"valibot": "^0.25.0"

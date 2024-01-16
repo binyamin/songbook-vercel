@@ -6,5 +6,6 @@
 ## Generated
 node_modules/
 dist/
-drizzle/db/
+drizzle/db/*
+!drizzle/db/.gitkeep
 .vercel/

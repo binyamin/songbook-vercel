@@ -1,0 +1,87 @@
+---
+import { LuciaError } from 'lucia';
+import { omit, safeParse } from 'valibot';
+import { user } from '../../drizzle/models/index.ts';
+import { formatIssues, formToJSON } from '~/services/helpers.ts';
+import { auth } from '~/services/auth.ts';
+
+import Layout from '~/layouts/base.astro';
+
+import { Button } from '~/components/elements/button';
+import '~/components/elements/form-field/text-field.css';
+
+let errors: Partial<ReturnType<typeof formatIssues>> = {}
+
+if (Astro.request.method === 'POST') {
+	const input = formToJSON(await Astro.request.formData());
+
+	const res = safeParse(omit(user, ['id']), input);
+
+	if (res.success) {
+		try {
+			// find user by key and validate password
+			const key = await auth.useKey(
+				"username",
+				res.output.username,
+				res.output.password,
+			);
+
+			const session = await auth.createSession({
+				userId: key.userId,
+				attributes: {}
+			});
+
+			Astro.locals.auth.setSession(session); // set session cookie
+			return Astro.redirect('/', 302); // redirect to profile page
+		} catch (e) {
+			if (e instanceof LuciaError && (
+				e.message === "AUTH_INVALID_KEY_ID" ||
+				e.message === "AUTH_INVALID_PASSWORD"
+			)) {
+				// user does not exist or invalid password
+				errors.root = "Incorrect username or password";
+			} else {
+				errors.root = "An unknown error occurred";
+			}
+		}
+	} else {
+		errors = formatIssues(res.issues);
+	}
+}
+
+// If user is logged in, redirect to profile page
+const session = await Astro.locals.auth.validate();
+if (session) return Astro.redirect('/', 302);
+---
+
+<Layout title='Log in'>
+	<article class="document | flow">
+		<h1>Log in</h1>
+
+		<form method="post" class="flow">
+			{errors.root && <output class="_error"><p><b>Error:</b> {errors.root}</p></output>}
+
+			<div class='form-field'>
+				<label for="form-username">Username</label>
+				<input class="input" data-type="text" type="text" name="username" id="form-username" required autocomplete="username" />
+				{errors.fields?.username &&
+					<div class="_error">
+						<p>{errors.fields.username}</p>
+					</div>
+				}
+			</div>
+
+			<div class='form-field'>
+				<label for="form-password">Password</label>
+				<input class="input" data-type="text" type="password" name="password" id="form-password" required autocomplete="current-password" minlength="8" />
+				{errors.fields?.password &&
+					<div class="_error">
+						<p>{errors.fields.password}</p>
+					</div>
+				}
+			</div>
+
+			<Button type="submit">Log in</Button>
+		</form>
+	</article>
+</Layout>

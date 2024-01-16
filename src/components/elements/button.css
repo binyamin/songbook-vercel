@@ -1,0 +1,73 @@
+/* ==== Reset ==== */
+.button:where(button) {
+	appearance: none;
+	background-color: transparent;
+	border: none;
+	color: currentColor;
+	padding: 0;
+	text-align: start;
+}
+
+/* ==== Base ==== */
+.button {
+	align-items: center;
+	border-radius: 0.35rem;
+	display: inline-flex;
+	justify-content: center;
+	user-select: auto;
+	vertical-align: top;
+	white-space: nowrap;
+}
+
+/* ==== Variants ==== */
+.button {
+	cursor: pointer;
+	font-weight: 500;
+	gap: var(--space-2xs);
+	padding-block: var(--space-3xs);
+	padding-inline: var(--space-xs);
+	vertical-align: middle;
+
+	background-color: var(--_bg-color);
+	border: 1px solid var(--_border-color, var(--_bg-color));
+
+	&:not([data-variant]),
+	&[data-variant=solid] {
+		--outline-color: var(--color-accent-600);
+
+		--_bg-color: var(--color-accent-600);
+		color: var(--color-accent-100);
+
+		&:hover {
+			--_bg-color: var(--color-accent-700);
+		}
+	}
+
+	&[data-variant=soft] {
+		--outline-color: var(--color-accent-100);
+
+		--_bg-color: var(--color-accent-100);
+		color: var(--color-accent-600);
+
+		&:hover {
+			--_bg-color: var(--color-accent-200);
+		}
+	}
+
+	&[data-variant=outline] {
+		--_border-color: var(--color-neutral-400);
+
+		&:hover {
+			--_bg-color: var(--color-neutral-100);
+		}
+	}
+
+	&[data-variant=text] {
+		color: var(--color-accent-700);
+		padding: 0;
+
+		&:hover {
+			color: var(--color-accent-800);
+		}
+	}
+}
