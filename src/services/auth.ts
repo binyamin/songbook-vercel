@@ -2,7 +2,7 @@ import { lucia } from 'lucia';
 import { astro } from 'lucia/middleware';
 import { libsql } from '@lucia-auth/adapter-sqlite';
 
-import { client } from '../../drizzle/index.ts';
+import { client } from '../../drizzle/index.js';
 
 export const auth = lucia({
 	env: import.meta.env.DEV ? "DEV" : "PROD",

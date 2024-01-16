@@ -7,8 +7,10 @@
 	"scripts": {
 		"dev": "astro dev",
 		"build": "astro build",
+		"build:prod": "node scripts/migrate.js && astro build",
 		"preview": "astro build && astro preview",
-		"prepare:db": "drizzle-kit generate:sqlite"
+		"db:generate": "drizzle-kit generate:sqlite",
+		"db:migrate": "node scripts/migrate.js"
 	},
 	"dependencies": {
 		"@evilmartians/harmony": "^1.2.0",

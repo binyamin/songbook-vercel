@@ -1,1 +1,1 @@
-export * from '../../drizzle/api/index.ts';
+export * from '../../drizzle/api/index.js';
