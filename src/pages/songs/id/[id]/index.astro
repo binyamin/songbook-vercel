@@ -1,4 +1,6 @@
 ---
+import { Show } from 'solid-js';
+
 import Layout from '~/layouts/base.astro';
 import { songs } from '~/services/db.ts';
 import { Button, LinkButton } from '~/components/elements/button';
@@ -17,27 +19,29 @@ if (!data) {
 	<article class="document | flow">
 		<h1>{data.title}</h1>
 
-		{session && <div class="l-cluster">
-			<LinkButton variant="outline" href={'/songs/id/' + data.id + '/edit'}>Edit</LinkButton>
-			<form method="post" action={'/songs/id/' + data.id + '/delete'} name='delete'>
-				<Button type="submit" variant="outline">Delete</Button>
-			</form>
-			<script>
-				const form = document.forms.namedItem('delete');
+		<Show when={session}>
+			<div class="l-cluster">
+				<LinkButton variant="outline" href={'/songs/id/' + data.id + '/edit'}>Edit</LinkButton>
+				<form method="post" action={'/songs/id/' + data.id + '/delete'} name='delete'>
+					<Button type="submit" variant="outline">Delete</Button>
+				</form>
+				<script>
+					const form = document.forms.namedItem('delete');
 
-				if (form) {
-					form.addEventListener('submit', (ev) => {
-						ev.preventDefault();
+					if (form) {
+						form.addEventListener('submit', (ev) => {
+							ev.preventDefault();
 
-						const res = window.confirm('Once you delete this item, you cannot retrieve it. Are you sure you want to delete it?');
+							const res = window.confirm('Once you delete this item, you cannot retrieve it. Are you sure you want to delete it?');
 
-						if (res) {
-							form.submit();
-						}
-					});
-				}
-			</script>
-		</div>}
+							if (res) {
+								form.submit();
+							}
+						});
+					}
+				</script>
+			</div>
+		</Show>
 
 		<pre>{data.content}</pre>
 	</article>
