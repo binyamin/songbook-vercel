@@ -2,9 +2,11 @@ import util from 'node:util';
 
 import { LibsqlError } from '@libsql/client';
 import chalk from 'chalk';
-import { LuciaError } from 'lucia';
+import { generateId } from 'lucia';
+import { Argon2id } from 'oslo/password';
+import { db, schema } from '../drizzle/index';
 
-import { auth } from '~/services/auth.js';
+import { lucia } from '~/services/auth.js';
 
 function fatal(msg: unknown, ...rest: unknown[]): never {
 	console.error(chalk.red('error') + ':', util.format(msg, ...rest));
@@ -26,23 +28,17 @@ const password = prompt('Please enter a password:');
 if (!password) fatal('Password must be provided');
 
 try {
-	const user = await auth.createUser({
-		key: {
-			providerId: 'username',
-			providerUserId: username,
-			password,
-		},
-		attributes: {
+	const user = await db
+		.insert(schema.user)
+		.values({
+			id: generateId(15),
 			username,
-		} // expects `Lucia.DatabaseUserAttributes`
-	});
-	info('Create user "%s"', user.username);
-} catch (e) {
-	if (e instanceof LuciaError && e.message === `AUTH_DUPLICATE_KEY_ID`) {
-		// key already exists
-		fatal('[lucia] Key already exists');
-	}
+			hashed_password: await new Argon2id().hash(password),
+		})
+		.returning();
 
+	info('Create user "%s"', user[0].username);
+} catch (e) {
 	if (e instanceof LibsqlError) {
 		if (e.code === 'SQLITE_CONSTRAINT_UNIQUE') {
 			fatal('[libsql]', 'Username already exists');

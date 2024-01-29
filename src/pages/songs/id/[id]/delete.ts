@@ -2,9 +2,7 @@ import type { APIRoute } from 'astro';
 import { songs } from 'drizzle/api';
 
 export const POST: APIRoute = async (ctx) => {
-	const session = await ctx.locals.auth.validate();
-
-	if (!session) {
+	if (!ctx.locals.user) {
 		return new Response("Unauthorized", {
 			status: 401,
 		});

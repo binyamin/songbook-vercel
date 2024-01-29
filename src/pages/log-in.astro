@@ -1,9 +1,8 @@
 ---
-import { LuciaError } from 'lucia';
 import { omit, safeParse } from 'valibot';
 import { user } from '../../drizzle/models/index.ts';
 import { formatIssues, formToJSON } from '~/services/helpers.ts';
-import { auth } from '~/services/auth.ts';
+import { lucia, verify } from '~/services/auth.ts';
 
 import Layout from '~/layouts/base.astro';
 
@@ -18,31 +17,20 @@ if (Astro.request.method === 'POST') {
 	const res = safeParse(omit(user, ['id']), input);
 
 	if (res.success) {
-		try {
-			// find user by key and validate password
-			const key = await auth.useKey(
-				"username",
-				res.output.username,
-				res.output.password,
-			);
+		// verify username & password
+		const user = await verify(res.output.username, res.output.password);
 
-			const session = await auth.createSession({
-				userId: key.userId,
-				attributes: {}
-			});
+		if (user) {
+			const session = await lucia.createSession(user.id, {});
+			const sessionCookie = lucia.createSessionCookie(session.id);
 
-			Astro.locals.auth.setSession(session); // set session cookie
-			return Astro.redirect('/', 302); // redirect to profile page
-		} catch (e) {
-			if (e instanceof LuciaError && (
-				e.message === "AUTH_INVALID_KEY_ID" ||
-				e.message === "AUTH_INVALID_PASSWORD"
-			)) {
-				// user does not exist or invalid password
-				errors.root = "Incorrect username or password";
-			} else {
-				errors.root = "An unknown error occurred";
-			}
+			// set session cookie
+			Astro.cookies.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+
+			// redirect to profile page
+			return Astro.redirect('/', 302);
+		} else {
+			errors.root = "Incorrect username or password";
 		}
 	} else {
 		errors = formatIssues(res.issues);
@@ -50,8 +38,7 @@ if (Astro.request.method === 'POST') {
 }
 
 // If user is logged in, redirect to profile page
-const session = await Astro.locals.auth.validate();
-if (session) return Astro.redirect('/', 302);
+if (Astro.locals.user) return Astro.redirect('/', 302);
 ---
 
 <Layout title='Log in'>

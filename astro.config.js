@@ -14,4 +14,9 @@ export default defineConfig({
 	build: {
 		inlineStylesheets: 'never',
 	},
+	vite: {
+		optimizeDeps: {
+			exclude: ['oslo'],
+		},
+	},
 });

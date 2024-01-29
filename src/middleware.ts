@@ -1,8 +1,40 @@
-import type { MiddlewareHandler } from "astro";
+import { defineMiddleware } from 'astro:middleware';
+import { verifyRequestOrigin } from 'lucia';
 
-import { auth } from "~/services/auth.ts";
+import { lucia as lucia } from '~/services/auth.ts';
 
-export const onRequest: MiddlewareHandler = async (context, next) => {
-	context.locals.auth = auth.handleRequest(context);
-	return await next();
-};
+export const onRequest = defineMiddleware(async (context, next) => {
+	if (context.request.method !== "GET") {
+		const originHeader = context.request.headers.get('Origin');
+		// NOTE: You may need to use `X-Forwarded-Host` instead
+		const hostHeader = context.request.headers.get('Host');
+		if (!originHeader || !hostHeader || !verifyRequestOrigin(originHeader, [hostHeader])) {
+			return new Response(null, {
+				status: 403
+			});
+		}
+	}
+
+	const sessionId = context.cookies.get(lucia.sessionCookieName)?.value ?? null;
+	if (!sessionId) {
+		context.locals.user = null;
+		context.locals.session = null;
+		return next();
+	}
+
+	const { session, user } = await lucia.validateSession(sessionId);
+	if (session && session.fresh) {
+		const sessionCookie = lucia.createSessionCookie(session.id);
+		context.cookies.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+	}
+
+	if (!session) {
+		const sessionCookie = lucia.createBlankSessionCookie();
+		context.cookies.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+	}
+
+	context.locals.user = user;
+	context.locals.session = session;
+
+	return next();
+});

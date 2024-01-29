@@ -11,7 +11,7 @@ export interface Props {
 }
 
 const docTitle = (Astro.props.title ? Astro.props.title + ' | ' : '') + 'Songbook';
-const session = await Astro.locals.auth?.validate();
+const user = Astro.locals.user;
 ---
 
 <html lang="en">
@@ -27,18 +27,18 @@ const session = await Astro.locals.auth?.validate();
 				<a href="/">Home</a>
 				<ul role="list" class="l-cluster">
 					<li><a href="/songs">Songs</a></li>
-					<Show when={session} >
+					<Show when={user} >
 						<li><a href="/songs/new">New Song</a></li>
 						<li><form method="POST" action="/log-out" name="logout">
 							<Button type="submit" color='danger' variant="soft">Log out</Button>
 						</form></li>
 					</Show>
-					<Show when={!session}>
+					<Show when={!user}>
 						<li><a href="/log-in">Log in</a></li>
 					</Show>
 				</ul>
 			</nav>
-			<Show when={session}>
+			<Show when={user}>
 				<script>
 					const form = document.forms.namedItem('logout');
 

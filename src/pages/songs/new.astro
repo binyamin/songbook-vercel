@@ -7,9 +7,7 @@ import { formatIssues, formToJSON } from '~/services/helpers.ts';
 
 import { SongForm } from '~/components/ui/song-form';
 
-const session = await Astro.locals.auth.validate();
-
-if (!session) {
+if (!Astro.locals.user) {
 	return new Response("Unauthorized", {
 		status: 401,
 	});

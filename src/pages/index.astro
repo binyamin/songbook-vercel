@@ -1,15 +1,14 @@
 ---
 import Layout from '~/layouts/base.astro';
-
-const session = await Astro.locals.auth.validate();
+const user = Astro.locals.user;
 ---
 
 <Layout title={false}>
 	<article class="document | flow">
 		<h1>My Songbook</h1>
 
-		{session
-			? <p><b>Username</b>: <var>{session.user.username}</var></p>
+		{user
+			? <p><b>Username</b>: <var>{user.username}</var></p>
 			: <p>You are <em>not</em> logged in. You can still browse <a href="/songs">existing songs</a>.</p>
 		}
 	</article>

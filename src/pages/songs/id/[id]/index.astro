@@ -5,8 +5,6 @@ import Layout from '~/layouts/base.astro';
 import { songs } from '~/services/db.ts';
 import { Button, LinkButton } from '~/components/elements/button';
 
-const session = await Astro.locals.auth.validate();
-
 const id = Astro.params.id!;
 
 const data = await songs.findOne(id);
@@ -19,7 +17,7 @@ if (!data) {
 	<article class="document | flow">
 		<h1>{data.title}</h1>
 
-		<Show when={session}>
+		<Show when={Astro.locals.user}>
 			<div class="l-cluster">
 				<LinkButton variant="outline" href={'/songs/id/' + data.id + '/edit'}>Edit</LinkButton>
 				<form method="post" action={'/songs/id/' + data.id + '/delete'} name='delete'>
