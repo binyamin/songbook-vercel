@@ -11,7 +11,7 @@ export interface Props {
 }
 
 const docTitle = (Astro.props.title ? Astro.props.title + ' | ' : '') + 'Songbook';
-const session = await Astro.locals.auth.validate();
+const session = await Astro.locals.auth?.validate();
 ---
 
 <html lang="en">
