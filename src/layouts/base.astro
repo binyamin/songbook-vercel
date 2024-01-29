@@ -24,8 +24,8 @@ const user = Astro.locals.user;
 	</head>
 	<body>
 		<div id="root" class="l-gelati | flow">
-			<nav class="l-repel">
-				<a href="/">Home</a>
+			<nav class="site-header | l-repel">
+				<a href="/" class="logo" aria-label="Home">{site.title}</a>
 				<ul role="list" class="l-cluster">
 					<li><a href="/songs">Songs</a></li>
 					<Show when={user} >

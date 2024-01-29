@@ -1,6 +1,2 @@
 @import './kochav.css';
-
-.document {
-	inline-size: min(65ch, 100%);
-	margin-inline: auto;
-}
+@import './prose.css';

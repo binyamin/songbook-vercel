@@ -39,7 +39,7 @@ if (Astro.request.method === 'POST') {
 ---
 
 <Layout title={`Editing "${data.title}" | Songs`}>
-	<article class="document | flow">
+	<article class="prose | flow">
 		<h1>Editing <b>{data.title}</b></h1>
 
 		<SongForm type="edit" errors={errors} input={data} cancelUrl={'/songs/id/' + data.id} />

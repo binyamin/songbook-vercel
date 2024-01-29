@@ -6,8 +6,22 @@
 	inline-size: clamp(20rem, 95vw, 75rem);
 	padding-inline: var(--space-s);
 	margin-inline: auto;
+	max-inline-size: 65ch;
 
 	& > footer {
+		font-weight: 600;
+	}
+}
+
+.site-header {
+	--repel-align: center;
+
+	a {
+		color: currentColor;
+	}
+
+	.logo {
+		font-size: var(--font-size-md);
 		font-weight: 600;
 	}
 }

@@ -1,0 +1,9 @@
+.prose {
+	> :is(h1, h2, h3, h4) {
+		--flow-space: var(--space-m);
+	}
+
+	> :is(h1, h2, h3, h4) + * {
+		--flow-space: var(--space-2xs);
+	}
+}
