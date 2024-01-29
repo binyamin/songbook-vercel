@@ -1,11 +1,13 @@
 ---
 import Layout from '~/layouts/base.astro';
+import { site } from '~/const';
+
 const user = Astro.locals.user;
 ---
 
 <Layout title={false}>
 	<article class="document | flow">
-		<h1>My Songbook</h1>
+		<h1>{ site.title }</h1>
 
 		{user
 			? <p><b>Username</b>: <var>{user.username}</var></p>

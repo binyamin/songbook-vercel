@@ -4,13 +4,14 @@ import './base.css';
 
 import { Show } from 'solid-js';
 
+import { site } from '~/const';
 import { Button } from '~/components/elements/button';
 
 export interface Props {
 	title: string | false;
 }
 
-const docTitle = (Astro.props.title ? Astro.props.title + ' | ' : '') + 'Songbook';
+const docTitle = (Astro.props.title ? Astro.props.title + ' | ' : '') + site.title;
 const user = Astro.locals.user;
 ---
 
