@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@libsql/client': ^0.4.1
+  '@libsql/client': ^0.4.2
 
 dependencies:
   '@evilmartians/harmony':
@@ -977,7 +977,7 @@ packages:
   /@lucia-auth/adapter-sqlite@3.0.0(@libsql/client@0.4.2)(lucia@3.0.1):
     resolution: {integrity: sha512-7XMfMMNziFOoqIq2u9W5Z+wo7G7lzNQfUh7wDlkIqKxJMSLtP6GKH+QpK+21X4ZY9dIDmiuiwqZmS3Q3CgpATw==}
     peerDependencies:
-      '@libsql/client': ^0.4.1
+      '@libsql/client': ^0.4.2
       better-sqlite3: 8.x - 9.x
       lucia: 3.x
     peerDependenciesMeta:
@@ -2576,7 +2576,7 @@ packages:
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=3'
-      '@libsql/client': ^0.4.1
+      '@libsql/client': ^0.4.2
       '@neondatabase/serverless': '>=0.1'
       '@opentelemetry/api': ^1.4.1
       '@planetscale/database': '>=1'
