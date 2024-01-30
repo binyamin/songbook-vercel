@@ -15,31 +15,33 @@ if (!data) {
 
 <Layout title={data.title + " | Songs"}>
 	<article class="prose | flow">
-		<h1>{data.title}</h1>
+		<div class="l-repel" style='--repel-align: center;'>
+			<h1>{data.title}</h1>
 
-		<Show when={Astro.locals.user}>
-			<div class="l-cluster">
-				<LinkButton variant="outline" href={'/songs/id/' + data.id + '/edit'}>Edit</LinkButton>
-				<form method="post" action={'/songs/id/' + data.id + '/delete'} name='delete'>
-					<Button type="submit" variant="outline">Delete</Button>
-				</form>
-				<script>
-					const form = document.forms.namedItem('delete');
+			<Show when={Astro.locals.user}>
+				<div class="l-cluster">
+					<LinkButton variant="text" href={'/songs/id/' + data.id + '/edit'}>Edit</LinkButton>
+					<form method="post" action={'/songs/id/' + data.id + '/delete'} name='delete'>
+						<Button type="submit" color='danger' variant="text">Delete</Button>
+					</form>
+					<script>
+						const form = document.forms.namedItem('delete');
 
-					if (form) {
-						form.addEventListener('submit', (ev) => {
-							ev.preventDefault();
+						if (form) {
+							form.addEventListener('submit', (ev) => {
+								ev.preventDefault();
 
-							const res = window.confirm('Once you delete this item, you cannot retrieve it. Are you sure you want to delete it?');
+								const res = window.confirm('Once you delete this item, you cannot retrieve it. Are you sure you want to delete it?');
 
-							if (res) {
-								form.submit();
-							}
-						});
-					}
-				</script>
-			</div>
-		</Show>
+								if (res) {
+									form.submit();
+								}
+							});
+						}
+					</script>
+				</div>
+			</Show>
+		</div>
 
 		<pre>{data.content}</pre>
 	</article>
