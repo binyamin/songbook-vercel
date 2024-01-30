@@ -8,6 +8,12 @@
 	text-align: start;
 }
 
+.button:where(a) {
+	&:hover {
+		text-decoration: none;
+	}
+}
+
 /* ==== Base ==== */
 .button {
 	align-items: center;
@@ -21,7 +27,6 @@
 
 /* ==== Variants ==== */
 .button {
-	cursor: pointer;
 	font-weight: 500;
 	gap: var(--space-2xs);
 	padding-block: var(--space-3xs);
@@ -72,10 +77,10 @@
 
 	&[data-variant=text] {
 		color: var(--color-accent-600);
-		padding: 0;
+		--_bg-color: transparent;
 
 		&:hover {
-			color: var(--color-accent-700);
+			--_bg-color: var(--color-accent-100);
 		}
 	}
 }
