@@ -18,6 +18,11 @@
 
 	a {
 		color: currentColor;
+		text-decoration-line: none;
+
+		&:hover {
+			color: var(--color-link);
+		}
 	}
 
 	.logo {
