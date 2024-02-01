@@ -33,8 +33,5 @@
 		"oslo": "^1.0.3",
 		"postcss-jit-props": "^1.0.14",
 		"valibot": "^0.27.1"
-	},
-	"resolutions": {
-		"@libsql/client": "$@libsql/client"
 	}
 }
